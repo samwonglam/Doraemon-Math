@@ -136,7 +136,7 @@
         }
 
         .ipad-btn {
-            min-height: 48px;
+            min-height: 44px;
             touch-action: manipulation;
         }
         .ipad-btn:active { transform: scale(0.96); }
@@ -155,7 +155,7 @@
                     <h1 class="text-base sm:text-xl font-black tracking-wide text-white drop-shadow">
                         哆啦A夢：記憶麵包對對碰
                     </h1>
-                    <p class="text-[10px] sm:text-xs font-bold text-amber-200">小數與分數互化．大卡片優化版</p>
+                    <p class="text-[10px] sm:text-xs font-bold text-amber-200">小數與分數互化．18組大題庫與最佳紀錄版</p>
                 </div>
             </div>
 
@@ -214,7 +214,7 @@
                 <button id="gadgetTimeBtn" onclick="useGadgetTime()" class="ipad-btn p-1.5 rounded-2xl bg-sky-50 hover:bg-sky-100 border-2 border-sky-300 text-slate-800 font-bold text-xs flex flex-col items-center justify-center transition-all shadow-sm">
                     <span class="text-lg">🚁</span>
                     <span class="font-extrabold text-[11px] text-sky-900 mt-0.5">竹蜻蜓減時</span>
-                    <span class="text-[9px] bg-sky-200 text-sky-900 px-1.5 rounded-full font-black">-15秒</span>
+                    <span id="timeCountTag" class="text-[9px] bg-sky-200 text-sky-900 px-1.5 rounded-full font-black">1 次 (-15秒)</span>
                 </button>
                 <button id="gadgetHintBtn" onclick="useGadgetHint()" class="ipad-btn p-1.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-slate-800 font-bold text-xs flex flex-col items-center justify-center transition-all shadow-sm">
                     <span class="text-lg">🔍</span>
@@ -241,18 +241,23 @@
                 </button>
             </div>
 
-            <div class="flex items-center space-x-3 text-xs sm:text-sm font-black">
-                <div class="flex items-center text-sky-700">
+            <div class="flex items-center flex-wrap gap-2.5 sm:gap-3 text-xs sm:text-sm font-black">
+                <div class="flex items-center text-sky-700" title="目前時間">
                     <i class="fa-regular fa-clock mr-1 text-sky-500"></i>
                     <span id="timerText">00:00</span>
                 </div>
-                <div class="flex items-center text-indigo-700">
+                <div class="flex items-center text-indigo-700" title="翻牌步數">
                     <i class="fa-solid fa-hand-pointer mr-1 text-indigo-500"></i>
                     <span id="movesText">0</span> 次
                 </div>
-                <div class="flex items-center text-emerald-700">
+                <div class="flex items-center text-emerald-700" title="配對進度">
                     <i class="fa-solid fa-cubes mr-1 text-emerald-500"></i>
                     <span id="scoreText">0 / 4</span>
+                </div>
+                <!-- 新增：該難度的最佳紀錄顯示 -->
+                <div class="flex items-center text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 text-[11px] sm:text-xs" title="此難度最佳紀錄">
+                    <i class="fa-solid fa-trophy mr-1 text-amber-500"></i>
+                    <span id="bestRecordText">最佳: -- / --次</span>
                 </div>
             </div>
 
@@ -354,7 +359,7 @@
             <div class="flex border-b border-slate-100 mt-2 flex-shrink-0">
                 <button id="tabBtn1" onclick="switchTab(1)" class="px-3 py-1.5 border-b-2 border-[#00A0E9] font-extrabold text-[#00A0E9] text-xs">湊十好朋友</button>
                 <button id="tabBtn2" onclick="switchTab(2)" class="px-3 py-1.5 border-b-2 border-transparent font-bold text-slate-400 text-xs hover:text-slate-600">位值口訣</button>
-                <button id="tabBtn3" onclick="switchTab(3)" class="px-3 py-1.5 border-b-2 border-transparent font-bold text-slate-400 text-xs hover:text-slate-600">記憶麵包表</button>
+                <button id="tabBtn3" onclick="switchTab(3)" class="px-3 py-1.5 border-b-2 border-transparent font-bold text-slate-400 text-xs hover:text-slate-600">記憶麵包表 (18組)</button>
             </div>
 
             <div class="overflow-y-auto py-2.5 flex-1 space-y-2.5 text-xs">
@@ -363,18 +368,23 @@
                         <h4 class="font-black text-amber-900 mb-0.5">💡 分數變小數：為什麼要湊十？</h4>
                         <p class="text-slate-700 leading-relaxed text-[11px]">小數是十進位數。只要把分數的分母擴分變成 10、100、1000，就能輕鬆寫成小數！</p>
                     </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <div class="bg-sky-50 p-2.5 rounded-2xl border border-sky-200 text-center">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div class="bg-sky-50 p-2 rounded-2xl border border-sky-200 text-center">
                             <span class="text-[9px] font-bold text-sky-600 block">10 的好朋友</span>
                             <div class="text-xs font-black text-sky-900 my-1">2 × 5 = 10</div>
                             <span class="text-[9px] text-slate-500 block">1/2 = 0.5</span>
                         </div>
-                        <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-200 text-center">
-                            <span class="text-[9px] font-bold text-emerald-600 block">100 的好朋友</span>
+                        <div class="bg-emerald-50 p-2 rounded-2xl border border-emerald-200 text-center">
+                            <span class="text-[9px] font-bold text-emerald-600 block">100 的好朋友(一)</span>
                             <div class="text-xs font-black text-emerald-900 my-1">4 × 25 = 100</div>
                             <span class="text-[9px] text-slate-500 block">1/4 = 0.25</span>
                         </div>
-                        <div class="bg-purple-50 p-2.5 rounded-2xl border border-purple-200 text-center">
+                        <div class="bg-amber-50 p-2 rounded-2xl border border-amber-200 text-center">
+                            <span class="text-[9px] font-bold text-amber-600 block">100 的好朋友(二)</span>
+                            <div class="text-xs font-black text-amber-900 my-1">20 × 5 = 100</div>
+                            <span class="text-[9px] text-slate-500 block">1/20 = 0.05</span>
+                        </div>
+                        <div class="bg-purple-50 p-2 rounded-2xl border border-purple-200 text-center">
                             <span class="text-[9px] font-bold text-purple-600 block">1000 的好朋友</span>
                             <div class="text-xs font-black text-purple-900 my-1">8 × 125 = 1000</div>
                             <span class="text-[9px] text-slate-500 block">1/8 = 0.125</span>
@@ -393,12 +403,16 @@
                             <span class="font-bold text-sky-600">→ 3/10</span>
                         </li>
                         <li class="bg-slate-50 p-2 rounded-xl border border-slate-200 flex justify-between items-center">
-                            <span>0.07 唸作<strong>「百分之七」</strong></span>
-                            <span class="font-bold text-sky-600">→ 7/100</span>
+                            <span>0.05 唸作<strong>「百分之五」</strong></span>
+                            <span class="font-bold text-sky-600">→ 5/100 → 約分為 1/20</span>
                         </li>
                         <li class="bg-slate-50 p-2 rounded-xl border border-slate-200 flex justify-between items-center">
                             <span>0.25 唸作<strong>「百分之二十五」</strong></span>
-                            <span class="font-bold text-sky-600">→ 約分為 1/4</span>
+                            <span class="font-bold text-sky-600">→ 25/100 → 約分為 1/4</span>
+                        </li>
+                        <li class="bg-slate-50 p-2 rounded-xl border border-slate-200 flex justify-between items-center">
+                            <span>0.625 唸作<strong>「千分之六百二十五」</strong></span>
+                            <span class="font-bold text-sky-600">→ 625/1000 → 約分為 5/8</span>
                         </li>
                     </ul>
                 </div>
@@ -409,20 +423,19 @@
                             <thead>
                                 <tr class="bg-slate-100 text-slate-600 border-b">
                                     <th class="p-1.5 font-black">小數</th>
-                                    <th class="p-1.5 font-black">擴分過程</th>
+                                    <th class="p-1.5 font-black">十進位分數</th>
                                     <th class="p-1.5 font-black">最簡分數</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <tr><td class="p-1 font-bold text-sky-600">0.3 / 0.7</td><td>3/10 、 7/10</td><td class="p-1 font-black">3/10 、 7/10</td></tr>
                                 <tr><td class="p-1 font-bold text-sky-600">0.5</td><td>5/10</td><td class="p-1 font-black">1/2</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.25</td><td>25/100</td><td class="p-1 font-black">1/4</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.75</td><td>75/100</td><td class="p-1 font-black">3/4</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.2</td><td>2/10</td><td class="p-1 font-black">1/5</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.4</td><td>4/10</td><td class="p-1 font-black">2/5</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.6</td><td>6/10</td><td class="p-1 font-black">3/5</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.8</td><td>8/10</td><td class="p-1 font-black">4/5</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.125</td><td>125/1000</td><td class="p-1 font-black">1/8</td></tr>
-                                <tr><td class="p-1 font-bold text-sky-600">0.375</td><td>375/1000</td><td class="p-1 font-black">3/8</td></tr>
+                                <tr><td class="p-1 font-bold text-sky-600">0.2 / 0.4 / 0.6 / 0.8</td><td>2/10 ~ 8/10</td><td class="p-1 font-black">1/5 ~ 4/5</td></tr>
+                                <tr><td class="p-1 font-bold text-sky-600">0.25 / 0.75</td><td>25/100 、 75/100</td><td class="p-1 font-black">1/4 、 3/4</td></tr>
+                                <tr><td class="p-1 font-bold text-sky-600">0.05 / 0.15 / 0.45</td><td>5/100 、 15/100 、 45/100</td><td class="p-1 font-black">1/20 、 3/20 、 9/20</td></tr>
+                                <tr><td class="p-1 font-bold text-sky-600">0.04 / 0.16</td><td>4/100 、 16/100</td><td class="p-1 font-black">1/25 、 4/25</td></tr>
+                                <tr><td class="p-1 font-bold text-sky-600">0.125 / 0.375</td><td>125/1000 、 375/1000</td><td class="p-1 font-black">1/8 、 3/8</td></tr>
+                                <tr><td class="p-1 font-bold text-sky-600">0.625 / 0.875</td><td>625/1000 、 875/1000</td><td class="p-1 font-black">5/8 、 7/8</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -435,7 +448,7 @@
         </div>
     </div>
 
-    <!-- Victory Screen (動態頭像與名稱) -->
+    <!-- Victory Screen (動態頭像、名稱與最佳紀錄比對) -->
     <div id="winModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-5 max-w-sm w-full text-center shadow-2xl border-4 border-[#FFDF00] relative overflow-hidden">
             <canvas id="confettiCanvas" class="absolute inset-0 pointer-events-none"></canvas>
@@ -464,7 +477,7 @@
             <h2 id="winTitle" class="text-lg font-black text-slate-800 mb-0.5">太棒了！大雄考了 100 分！</h2>
             <p class="text-xs font-bold text-slate-500 mb-2.5">記憶麵包發揮功效！成功破解所有題目！</p>
 
-            <div id="winStatsSummary" class="bg-slate-50 rounded-2xl p-2.5 mb-3 space-y-1 text-xs text-slate-700 border border-slate-200">
+            <div id="winStatsSummary" class="bg-slate-50 rounded-2xl p-2.5 mb-3 space-y-1.5 text-xs text-slate-700 border border-slate-200">
             </div>
 
             <button onclick="closeWinModal(); initGame();" class="ipad-btn w-full py-2.5 bg-[#00A0E9] hover:bg-sky-600 text-white font-black rounded-2xl shadow transition-all text-xs sm:text-sm flex items-center justify-center space-x-1.5">
@@ -476,7 +489,9 @@
 
     <!-- Game Logic Engine -->
     <script>
+        // 擴充至 18 組經典小數與分數互化題庫
         const PAIRS_DATA = [
+            // 基礎：二分之幾、四分之幾、五分之幾 (原 9 組)
             { id: "p1", decimal: "0.5", fractionNum: 1, fractionDen: 2, fractionText: "1/2", decToFrac: ["0.5 的位值在十分位，寫成分數是 5/10。", "分子分母同除以 5 約分，得到最簡分數 1/2！"], fracToDec: ["觀察分母 2，尋找 10 的好朋友：2 × 5 = 10。", "擴分：(1×5) / (2×5) = 5/10 = 0.5！"] },
             { id: "p2", decimal: "0.25", fractionNum: 1, fractionDen: 4, fractionText: "1/4", decToFrac: ["0.25 位在百分位，寫成分數是 25/100。", "分子分母同除以 25 約分，得到 1/4！"], fracToDec: ["觀察分母 4，尋找 100 的好朋友：4 × 25 = 100。", "擴分：(1×25) / (4×25) = 25/100 = 0.25！"] },
             { id: "p3", decimal: "0.75", fractionNum: 3, fractionDen: 4, fractionText: "3/4", decToFrac: ["0.75 位在百分位，寫成分數是 75/100。", "分子分母同除以 25 約分，得到 3/4！"], fracToDec: ["觀察分母 4，尋找 100 的好朋友：4 × 25 = 100。", "擴分：(3×25) / (4×25) = 75/100 = 0.75！"] },
@@ -485,8 +500,21 @@
             { id: "p6", decimal: "0.6", fractionNum: 3, fractionDen: 5, fractionText: "3/5", decToFrac: ["0.6 位在十分位，寫成分數是 6/10。", "分子分母同除以 2 約分，得到 3/5！"], fracToDec: ["觀察分母 5，尋找 10 的好朋友：5 × 2 = 10。", "擴分：(3×2) / (5×2) = 6/10 = 0.6！"] },
             { id: "p7", decimal: "0.8", fractionNum: 4, fractionDen: 5, fractionText: "4/5", decToFrac: ["0.8 位在十分位，寫成分數是 8/10。", "分子分母同除以 2 約分，得到 4/5！"], fracToDec: ["觀察分母 5，尋找 10 的好朋友：5 × 2 = 10。", "擴分：(4×2) / (5×2) = 8/10 = 0.8！"] },
             { id: "p8", decimal: "0.125", fractionNum: 1, fractionDen: 8, fractionText: "1/8", decToFrac: ["0.125 位在千分位，寫成分數是 125/1000。", "分子分母同除以 125 約分，得到 1/8！"], fracToDec: ["觀察分母 8，尋找 1000 的好朋友：8 × 125 = 1000。", "擴分：(1×125) / (8×125) = 125/1000 = 0.125！"] },
-            { id: "p9", decimal: "0.375", fractionNum: 3, fractionDen: 8, fractionText: "3/8", decToFrac: ["0.375 位在千分位，寫成分數是 375/1000。", "分子分母同除以 125 約分，得到 3/8！"], fracToDec: ["觀察分母 8，尋找 1000 的好朋友：8 × 125 = 1000。", "擴分：(3×125) / (8×125) = 375/1000 = 0.375！"] }
+            { id: "p9", decimal: "0.375", fractionNum: 3, fractionDen: 8, fractionText: "3/8", decToFrac: ["0.375 位在千分位，寫成分數是 375/1000。", "分子分母同除以 125 約分，得到 3/8！"], fracToDec: ["觀察分母 8，尋找 1000 的好朋友：8 × 125 = 1000。", "擴分：(3×125) / (8×125) = 375/1000 = 0.375！"] },
+            
+            // 新增擴充 (p10 ~ p18)：八分之幾補齊、二十分之幾、二十五分之幾、十分之幾
+            { id: "p10", decimal: "0.625", fractionNum: 5, fractionDen: 8, fractionText: "5/8", decToFrac: ["0.625 位在千分位，寫成分數是 625/1000。", "分子分母同除以 125 約分，得到 5/8！"], fracToDec: ["觀察分母 8，尋找 1000 的好朋友：8 × 125 = 1000。", "擴分：(5×125) / (8×125) = 625/1000 = 0.625！"] },
+            { id: "p11", decimal: "0.875", fractionNum: 7, fractionDen: 8, fractionText: "7/8", decToFrac: ["0.875 位在千分位，寫成分數是 875/1000。", "分子分母同除以 125 約分，得到 7/8！"], fracToDec: ["觀察分母 8，尋找 1000 的好朋友：8 × 125 = 1000。", "擴分：(7×125) / (8×125) = 875/1000 = 0.875！"] },
+            { id: "p12", decimal: "0.05", fractionNum: 1, fractionDen: 20, fractionText: "1/20", decToFrac: ["0.05 位在百分位，寫成分數是 5/100。", "分子分母同除以 5 約分，得到 1/20！"], fracToDec: ["觀察分母 20，尋找 100 的好朋友：20 × 5 = 100。", "擴分：(1×5) / (20×5) = 5/100 = 0.05（注意十分位補 0）！"] },
+            { id: "p13", decimal: "0.15", fractionNum: 3, fractionDen: 20, fractionText: "3/20", decToFrac: ["0.15 位在百分位，寫成分數是 15/100。", "分子分母同除以 5 約分，得到 3/20！"], fracToDec: ["觀察分母 20，尋找 100 的好朋友：20 × 5 = 100。", "擴分：(3×5) / (20×5) = 15/100 = 0.15！"] },
+            { id: "p14", decimal: "0.45", fractionNum: 9, fractionDen: 20, fractionText: "9/20", decToFrac: ["0.45 位在百分位，寫成分數是 45/100。", "分子分母同除以 5 約分，得到 9/20！"], fracToDec: ["觀察分母 20，尋找 100 的好朋友：20 × 5 = 100。", "擴分：(9×5) / (20×5) = 45/100 = 0.45！"] },
+            { id: "p15", decimal: "0.04", fractionNum: 1, fractionDen: 25, fractionText: "1/25", decToFrac: ["0.04 位在百分位，寫成分數是 4/100。", "分子分母同除以 4 約分，得到 1/25！"], fracToDec: ["觀察分母 25，尋找 100 的好朋友：25 × 4 = 100。", "擴分：(1×4) / (25×4) = 4/100 = 0.04（注意十分位補 0）！"] },
+            { id: "p16", decimal: "0.16", fractionNum: 4, fractionDen: 25, fractionText: "4/25", decToFrac: ["0.16 位在百分位，寫成分數是 16/100。", "分子分母同除以 4 約分，得到 4/25！"], fracToDec: ["觀察分母 25，尋找 100 的好朋友：25 × 4 = 100。", "擴分：(4×4) / (25×4) = 16/100 = 0.16！"] },
+            { id: "p17", decimal: "0.3", fractionNum: 3, fractionDen: 10, fractionText: "3/10", decToFrac: ["0.3 唸作「十分之三」，直接寫成分數就是 3/10！", "3 和 10 互質，已經是最簡分數囉！"], fracToDec: ["分母已經是 10，不需要再擴分！", "十分之三直接寫成一位小數就是 0.3！"] },
+            { id: "p18", decimal: "0.7", fractionNum: 7, fractionDen: 10, fractionText: "7/10", decToFrac: ["0.7 唸作「十分之七」，直接寫成分數就是 7/10！", "7 和 10 互質，已經是最簡分數囉！"], fracToDec: ["分母已經是 10，不需要再擴分！", "十分之七直接寫成一位小數就是 0.7！"] }
         ];
+
+        const STORAGE_KEY_PREFIX = 'dora_memory_bread_best_';
 
         let difficulty = 'easy';
         let cardsList = [];
@@ -501,6 +529,7 @@
 
         let peekCount = 2;
         let shuffleCount = 1;
+        let timeCount = 1;
         let hintCount = 2;
 
         // 加入答錯與答對時的語音音效
@@ -515,6 +544,55 @@
             return array;
         }
 
+        // 讀取當前難度的最佳紀錄 (localStorage)
+        function getBestRecord(diff) {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_PREFIX + diff);
+                return raw ? JSON.parse(raw) : { bestTime: null, bestMoves: null };
+            } catch (e) {
+                return { bestTime: null, bestMoves: null };
+            }
+        }
+
+        // 儲存並比對最佳紀錄，回傳是否破紀錄
+        function saveAndCheckBestRecord(diff, currentSeconds, currentMoves) {
+            const currentBest = getBestRecord(diff);
+            let isNewTimeRecord = false;
+            let isNewMovesRecord = false;
+
+            if (currentBest.bestTime === null || currentSeconds < currentBest.bestTime) {
+                currentBest.bestTime = currentSeconds;
+                isNewTimeRecord = true;
+            }
+            if (currentBest.bestMoves === null || currentMoves < currentBest.bestMoves) {
+                currentBest.bestMoves = currentMoves;
+                isNewMovesRecord = true;
+            }
+
+            try {
+                localStorage.setItem(STORAGE_KEY_PREFIX + diff, JSON.stringify(currentBest));
+            } catch (e) {
+                console.warn('localStorage 無法寫入:', e);
+            }
+
+            updateBestRecordUI();
+            return { isNewTimeRecord, isNewMovesRecord, bestTime: currentBest.bestTime, bestMoves: currentBest.bestMoves };
+        }
+
+        function formatSecondsToMMSS(sec) {
+            if (sec === null || sec === undefined) return '--:--';
+            const m = String(Math.floor(sec / 60)).padStart(2, '0');
+            const s = String(sec % 60).padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function updateBestRecordUI() {
+            const best = getBestRecord(difficulty);
+            const timeStr = best.bestTime !== null ? formatSecondsToMMSS(best.bestTime) : '--:--';
+            const movesStr = best.bestMoves !== null ? `${best.bestMoves}次` : '--次';
+            document.getElementById('bestRecordText').innerText = `最佳: ${timeStr} / ${movesStr}`;
+        }
+
         function initGame() {
             clearInterval(timerTimer);
             timerSeconds = 0;
@@ -526,15 +604,18 @@
             
             peekCount = 2;
             shuffleCount = 1;
+            timeCount = 1;
             hintCount = 2;
-
-            updateDashboardUI();
-            resetGadgetButtons();
-            closeMismatchBanner();
 
             if (difficulty === 'easy') totalPairs = 4;
             else if (difficulty === 'medium') totalPairs = 6;
             else if (difficulty === 'hard') totalPairs = 8;
+
+            updateDashboardUI();
+            updateTimerDisplay();
+            updateBestRecordUI();
+            resetGadgetButtons();
+            closeMismatchBanner();
 
             const shuffledData = shuffleArray([...PAIRS_DATA]);
             const selectedPairs = shuffledData.slice(0, totalPairs);
@@ -628,7 +709,12 @@
                 matchedCount++;
                 combo++;
 
-                // 播放答對時的讚賞語音[cite: 6]
+                // 若全部配對完成，先停止計時器
+                if (matchedCount === totalPairs) {
+                    clearInterval(timerTimer);
+                }
+
+                // 播放答對時的讚賞語音
                 correctSound.currentTime = 0;
                 correctSound.play().catch(e => console.warn('瀏覽器自動播放限制，音效無法播放:', e));
 
@@ -641,10 +727,6 @@
                     openSolutionModal(c1.card.data);
                     flippedCards = [];
                     isBoardLocked = false;
-
-                    if (matchedCount === totalPairs) {
-                        handleWin();
-                    }
                 }, 500);
 
             } else {
@@ -703,10 +785,17 @@
 
         function closeSolutionModal() {
             document.getElementById('solutionModal').classList.add('hidden');
+            // 關閉解析視窗後，若已全部配對完成，才彈出過關畫面（避免兩個視窗重疊）
+            if (matchedCount === totalPairs) {
+                handleWin();
+            }
         }
 
         function handleWin() {
             clearInterval(timerTimer);
+
+            // 儲存並檢查是否破紀錄
+            const recordResult = saveAndCheckBestRecord(difficulty, timerSeconds, moves);
 
             let charName = "野比大雄";
             let charImg = "./image_c2c1fb.png";
@@ -733,10 +822,34 @@
             const seconds = timerSeconds % 60;
             const timeStr = `${minutes > 0 ? minutes + '分' : ''}${seconds}秒`;
 
+            const bestMin = Math.floor(recordResult.bestTime / 60);
+            const bestSec = recordResult.bestTime % 60;
+            const bestTimeStr = `${bestMin > 0 ? bestMin + '分' : ''}${bestSec}秒`;
+
+            const newTimeBadge = recordResult.isNewTimeRecord 
+                ? `<span class="ml-1 px-1.5 py-0.5 text-[10px] bg-amber-400 text-slate-900 rounded-full font-black animate-pulse">🎉 破紀錄!</span>` 
+                : '';
+            const newMovesBadge = recordResult.isNewMovesRecord 
+                ? `<span class="ml-1 px-1.5 py-0.5 text-[10px] bg-amber-400 text-slate-900 rounded-full font-black animate-pulse">🎉 破紀錄!</span>` 
+                : '';
+
             summary.innerHTML = `
-                <div class="flex justify-between font-bold"><span>難度模式：</span><span class="text-sky-600">${difficulty === 'easy' ? '基礎 (大雄)' : difficulty === 'medium' ? '標準 (胖虎)' : '挑戰 (出木杉)'}</span></div>
-                <div class="flex justify-between font-bold"><span>翻牌次數：</span><span class="text-indigo-600">${moves} 次</span></div>
-                <div class="flex justify-between font-bold"><span>總共耗時：</span><span class="text-emerald-600">${timeStr}</span></div>
+                <div class="flex justify-between font-bold">
+                    <span>難度模式：</span>
+                    <span class="text-sky-600">${difficulty === 'easy' ? '基礎 (大雄 4對)' : difficulty === 'medium' ? '標準 (胖虎 6對)' : '挑戰 (出木杉 8對)'}</span>
+                </div>
+                <div class="flex justify-between font-bold items-center">
+                    <span>本次翻牌：</span>
+                    <span class="text-indigo-600">${moves} 次 ${newMovesBadge}</span>
+                </div>
+                <div class="flex justify-between font-bold items-center">
+                    <span>本次耗時：</span>
+                    <span class="text-emerald-600">${timeStr} ${newTimeBadge}</span>
+                </div>
+                <div class="border-t border-slate-200 pt-1.5 mt-1.5 flex justify-between font-black text-amber-700">
+                    <span>🏆 歷史最佳紀錄：</span>
+                    <span>${bestTimeStr} / ${recordResult.bestMoves} 次</span>
+                </div>
             `;
 
             winModal.classList.remove('hidden');
@@ -796,6 +909,8 @@
             document.getElementById('peekCountTag').innerText = `${peekCount} 次`;
             if (peekCount === 0) document.getElementById('gadgetPeekBtn').classList.add('opacity-40');
 
+            // 清除已翻開單張牌的暫存狀態，避免蓋牌後卡死
+            flippedCards = [];
             isBoardLocked = true;
             const unmatchedEls = cardsList.filter(c => !c.isMatched).map(c => document.getElementById(c.cardId));
             unmatchedEls.forEach(el => el.classList.add('flipped'));
@@ -813,6 +928,7 @@
             document.getElementById('shuffleCountTag').innerText = `${shuffleCount} 次`;
             document.getElementById('gadgetShuffleBtn').classList.add('opacity-40');
 
+            flippedCards = [];
             const unmatched = cardsList.filter(c => !c.isMatched);
             const matched = cardsList.filter(c => c.isMatched);
             shuffleArray(unmatched);
@@ -823,6 +939,11 @@
         }
 
         function useGadgetTime() {
+            if (timeCount <= 0 || isBoardLocked) return;
+            timeCount--;
+            document.getElementById('timeCountTag').innerText = `${timeCount} 次 (-15秒)`;
+            if (timeCount === 0) document.getElementById('gadgetTimeBtn').classList.add('opacity-40');
+
             timerSeconds = Math.max(0, timerSeconds - 15);
             updateTimerDisplay();
             setDoraTalk("「戴上竹蜻蜓！時間倒退 15 秒！」");
@@ -863,9 +984,11 @@
         function resetGadgetButtons() {
             document.getElementById('peekCountTag').innerText = `${peekCount} 次`;
             document.getElementById('shuffleCountTag').innerText = `${shuffleCount} 次`;
+            document.getElementById('timeCountTag').innerText = `${timeCount} 次 (-15秒)`;
             document.getElementById('hintCountTag').innerText = `${hintCount} 次`;
             document.getElementById('gadgetPeekBtn').classList.remove('opacity-40');
             document.getElementById('gadgetShuffleBtn').classList.remove('opacity-40');
+            document.getElementById('gadgetTimeBtn').classList.remove('opacity-40');
             document.getElementById('gadgetHintBtn').classList.remove('opacity-40');
         }
 
@@ -889,9 +1012,7 @@
         }
 
         function updateTimerDisplay() {
-            const m = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
-            const s = String(timerSeconds % 60).padStart(2, '0');
-            document.getElementById('timerText').innerText = `${m}:${s}`;
+            document.getElementById('timerText').innerText = formatSecondsToMMSS(timerSeconds);
         }
 
         function setDoraTalk(msg) {
